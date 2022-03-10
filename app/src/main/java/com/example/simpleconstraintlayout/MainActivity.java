@@ -10,49 +10,80 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    EditText et_email, et_password;
-    Button login;
-    String email, password;
+    //Deklarasi variabel untuk button
+    Button btnLogin;
+
+    //Deklarasi variabel untuk EditText
+    EditText edemail, edpassword;
+
+    //Deklarasi variabel untuk menyimpan email dan password
+    String nama, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((R.layout.activity_main));
+        setContentView(R.layout.activity_main);
 
-        et_email = findViewById(R.id.edEmail);
-        et_password = findViewById(R.id.edPassword);
-        login = findViewById(R.id.btSignin);
+        //menghubungkan variabel btnLogin dengan componen button pada Layout
+        btnLogin=findViewById(R.id.btSignIn);
 
-        login.setOnClickListener(new View.OnClickListener() {
+        //Menghubungakan variabel edemail dengan componen button pada Layout
+        edemail=findViewById(R.id.edEmail);
+
+        //Menghubungakan variabel edpassword dengan componen button pada Layout
+        edpassword=findViewById(R.id.edPassword);
+
+
+
+        //membuat fungsi onclick pada button btnLogin
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validasi();
+                //menyimpan input user edittext email kedalam variabel nama
+                nama = edemail.getText().toString();
 
+                //menyimpan input user di edittext password kedalam variabel password
+                password = edpassword.getText().toString();
+
+                String email = "paldi@gmail.com";
+                String pass = "12345";
+
+                if (nama.isEmpty() || password.isEmpty()) {
+                    Toast t = Toast.makeText(getApplicationContext(),
+                            "Email dan password wajib diisi!!!",
+                            Toast.LENGTH_LONG);
+                    t.show();
+
+                } else if (nama.equals(email) && password.equals(pass)) {
+                    Toast t = Toast.makeText(getApplicationContext(),
+                            "Login Berhasil",
+                            Toast.LENGTH_LONG);
+
+                    t.show();
+
+                    Bundle b = new Bundle();
+                    b.putString("a",nama.trim());
+                    b.putString("b", password.trim());
+
+                    Intent i = new Intent(getApplicationContext(), ActivityHasil.class);
+                    i.putExtras(b);
+                    startActivity(i);
+
+
+                } else if (nama.equals(email)) {
+                    Toast t = Toast.makeText(getApplicationContext(),
+                            "Password Salah", Toast.LENGTH_LONG);
+                    t.show();
+                } else if (password.equals(pass)) {
+                    Toast t = Toast.makeText(getApplicationContext(),
+                            "Email Salah", Toast.LENGTH_LONG);
+                    t.show();
+                } else {
+                    Toast t = Toast.makeText(getApplicationContext(),
+                            "Email dan Password Salah", Toast.LENGTH_LONG);
+                    t.show();
+                }
             }
         });
-    }
-
-    private void validasi() {
-        email = et_email.getText().toString();
-        password = et_password.getText().toString();
-
-        if (email.equals("paldi@gmail.com") && password.equals("paldi12345")) {
-            Toast.makeText(MainActivity.this, "Login Sukses", Toast.LENGTH_SHORT).show();
-
-        }
-        else if(email != ("paldi@gmail.com") && password.equals("paldi12345"))
-        {
-            Toast.makeText(MainActivity.this, "Email Salah", Toast.LENGTH_SHORT).show();
-
-        }
-        else if(email.equals("paldi@gmail.com") && password != ("paldi12345"))
-        {
-            Toast.makeText(MainActivity.this, "Password Salah", Toast.LENGTH_SHORT).show();
-        }
-        else if(email != ("paldi@gmail.com") && password != ("paldi12345"))
-        {
-            Toast.makeText(MainActivity.this, "Email dan Password Salah", Toast.LENGTH_SHORT).show();
-
-        }
     }
 }
